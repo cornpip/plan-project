@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            grid-template-rows: repeat(5, 150px);
+            grid-gap: 5px;
+            grid-template-areas:
+            "header header header header header header"
+            "aside main2 main2 main2 main2 footer"
+            "aside main2 main2 main2 main2 footer"
+            "aside main2 main2 main2 main2 footer"
+            "aside main2 main2 main2 main2 footer";
+            }
+
+        header { grid-area: header; }    
+        main2  { grid-area: main2; }
+        aside  { grid-area: aside; }
+        footer { grid-area: footer; }
+        header{
+         
+            border:2px solid burlywood;  
+        }
+        main2{
+            background-color: blueviolet;
+            border:2px solid blueviolet;  
+        }
+        aside{
+        
+            border:2px solid burlywood;  
+        }
+        footer{
+         
+            border:2px solid burlywood;  
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header></header>
+        <main2></main2>
+        <aside></aside>
+        <footer></footer>
+    </div1>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            grid-template-rows: repeat(5, minmax(150px, auto));
+            gap: 5px 5px;
+        }
+
+        header {
+            grid-column: 1/7;
+        }
+        main   { grid-area: main;}
+        aside  { grid-area: aside;  }
+        footer { grid-area: footer; }
+        header{
+         
+            border:2px dashed burlywood;  
+        }
+        main{
+        
+            border:2px solid burlywood;  
+        }
+        aside{
+        
+            border:2px dashed burlywood;  
+        }
+        footer{
+         
+            border:2px dashed burlywood;  
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header></header>
+        <main></main>
+        <aside></aside>
+        <footer></footer>
+    </div1>
+</body>
+</html>
