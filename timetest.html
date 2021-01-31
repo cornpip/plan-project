@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1 class="tiktok">123</h1>
+    <script>
+        var lookclock = document.querySelector(".tiktok");
+        alert(lookclock);
+        function clock(){
+            let today = new Date();
+            let sec= today.getSeconds();
+            lookclock.innerHTML = `${sec}`
+        }
+        
+        function init(){
+            setInterval(clock, 1000);
+        }
+
+        init();
+    </script>
+</body>
+</html>
+

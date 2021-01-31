@@ -5,44 +5,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
+        body{
+            margin:0;
+        }
         .container {
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            grid-template-rows: repeat(5, minmax(150px, auto));
-            gap: 5px 5px;
+            grid-template-columns: 100px repeat(4, 1fr) 100px;
+            grid-template-rows: 50px repeat(5, minmax(150px, auto));
+            gap: 15px 15px;
         }
-
+        subhead{
+            grid-column:1/7;
+            grid-row: 1/1;
+            height:50px;
+            background-color:#202d4e;
+            box-shadow:0 3px 7px 0 rgb(0 0 0 / 25%);
+            color:rgb;
+            position: relative;
+        }
         header {
+        
             grid-column: 1/7;
+            grid-row:2/2
         }
-        main   { grid-area: main;}
-        aside  { grid-area: aside;  }
-        footer { grid-area: footer; }
-        header{
-         
-            border:2px dashed burlywood;  
+        .blank { 
+            grid-column:1/1;
+            grid-row: 1/6;
+            border-right:2px groove rgba(179, 2, 2, 0.2);
+            margin-right:60px
+        }
+        .blank2{
+            grid-column:6/6;
+            grid-row: 1/6;
+            border-left:2px groove rgba(179, 2, 2, 0.2);
+            margin-left:60px
         }
         main{
-        
+            box-shadow:2px 3px 4px 0 rgb(0 0 0 / 20%);
+            border-radius:10px 100px / 120px;
             border:2px solid burlywood;  
         }
-        aside{
-        
-            border:2px dashed burlywood;  
+        .left{
+            grid-column:1/1;
+            grid-row: 3/4;
+            writing-mode: vertical-rl;
+            /* vertical-lr 
+            transform: rotate(180deg);
+            text-align: center;*/
+            background-color: white;
+            height:120px;
         }
-        footer{
-         
-            border:2px dashed burlywood;  
+        .left2{
+            grid-column:6/6;
+            grid-row: 5/6;
+            writing-mode: vertical-rl;
+            background-color: white;
+            padding-top:10px;
+            height:120px;
         }
-
     </style>
+    <script>
+        let today = new Date();
+        console.log(today);
+    </script>
 </head>
 <body>
     <div class="container">
+        <subhead></subhead>
         <header></header>
-        <main></main>
-        <aside></aside>
-        <footer></footer>
+        <main class="item"></main>
+        <main class="item"></main>
+        <main class="item"></main>
+        <main class="item"></main>
+        <main class="item"></main>
+        <main class="item"></main>
+        <main class="item"></main>
+        <main class="item"></main>
+        <main class="item"></main>
+        <main class="item"></main>
+        <main class="item"></main>
+        <main class="item"></main>
+        <aside class="blank"></aside>
+        <h2 class="left">test one <br> two</h2>
+        <aside class="blank2"></aside>
+        <h2 class="left2">test one <br> two</h2>
     </div1>
 </body>
 </html>
