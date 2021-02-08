@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .grid{
+            display: grid;
+            display: -ms-grid;
+            grid-gap: 10px;
+            grid-template-columns: repeat(3, 100px);
+            /* border: 2px solid burlywood; */
+            -ms-grid-columns: 100px 10px 100px 10px 100px;
+            -ms-grid-rows: 100px 10px 100px;
+            background-color: #fff;
+            color: #444;
+        }
+        .box{
+            background-color: #444;
+            color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            font-size: 150%;
+        }
+        .a{
+            text-align: right;
+            -ms-grid-row: 1;
+            -ms-grid-column: 1;
+            -ms-grid-column-span: 3;
+            grid-column: 1 / 3;
+            grid-row: 1;
+        }
+
+        .b{
+            -ms-grid-row: 1;
+            -ms-grid-row-span: 3;
+            -ms-grid-column: 5;
+            grid-column: 3;
+            grid-row: 1 / 3;
+        }
+        .c {
+            -ms-grid-row: 3;
+            -ms-grid-column: 1;
+            grid-column: 1;
+            grid-row: 2;
+        }
+        .d {
+            -ms-grid-column: 3;
+            -ms-grid-row: 3;
+            grid-column: 2;
+            grid-row: 2;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid">
+        <div class="box a">1</div>
+        <div class="box b">2</div>
+        <div class="box c">3</div>
+        <div class="box d">4</div>
+    </div>
+</body>
+</html>

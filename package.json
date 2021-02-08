@@ -1,0 +1,37 @@
+{
+  "name": "plan-project",
+  "version": "1.0.0",
+  "description": "project",
+  "main": "clock.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cornpip/plan-project.git"
+  },
+  "keywords": [],
+  "author": "choi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cornpip/plan-project/issues"
+  },
+  "homepage": "https://github.com/cornpip/plan-project#readme",
+  "devDependencies": {},
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cheerio": "^1.0.0-rc.5",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "help": "^3.0.2",
+    "moment": "^2.29.1",
+    "mysql": "^2.18.1",
+    "postcss": "^8.1.0",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6",
+    "voca": "^1.4.0"
+  }
+}
