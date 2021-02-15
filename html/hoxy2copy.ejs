@@ -28,12 +28,10 @@
             grid-template-rows: minmax(180px, auto) minmax(720px, auto);
         }
         subhead{
-            grid-row: 1/1;
             height:50px;
             background-color:#202d4e;
             box-shadow:0 3px 7px 0 rgb(0 0 0 / 25%);
             color:rgb;
-            position: relative;
         }
         .time{
             color:rgba(255, 255, 255, 0.904);
@@ -44,7 +42,10 @@
         header {
             grid-column: 1/1;
             grid-row:1/1;
-
+        }
+        .writecenter{
+            display: flex;
+            justify-content: center;
         }
         .blank { 
             grid-row:2/2;
@@ -83,19 +84,13 @@
             margin:5px;
             /* vertical-align:top; block요소에서 적용 안됨*/
         }
-        input.tinput{
+        input[type="text"]{
             line-height: normal;
             padding: .8em .5em;
             width: 79%;
             border:0.2em solid burlywood;
         }
-        input.signinput{
-            line-height: normal;
-            padding: .8em .5em;
-            width: 85%;
-            box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
-            border: white;
-        }
+
         textarea{
             padding: .6em .5em;
             width:80%;
@@ -108,29 +103,35 @@
             align-items: center;
             gap:0.3em;
         }
-        signform{
-            position:relative;
+        schedule{
             grid-column:1/1;
             grid-row:2/2;
         }
-        .sign{
-            margin:0.5em;
-        }
-        .thing {
-            position:absolute;
-            padding: 1rem;
-            box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-            border-radius: 0.5rem;
-            width: 80%;
-            height: 80%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
 
-            color: #242424; 
-            font-size: 15px; 
-            font-weight: 400; 
-            line-height: 32px; 
+        .thing {
+        margin-left:1rem;
+        padding: 1rem;
+        width: 720px;
+        box-shadow: 0 15px 30px 0 rgba(0,0,0,0.11),
+            0 5px 15px 0 rgba(0,0,0,0.08);
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        
+        border-left: 0 solid #00ff99;
+        transition: border-left 300ms ease-in-out, padding-left 300ms ease-in-out;
+        }
+
+        .thing:hover {
+        padding-left: 0.5rem;
+        border-left: 0.5rem solid #00ff99;
+        }
+
+        .thing > :first-child {
+        margin-top: 0;
+        }
+
+        .thing > :last-child {
+        margin-bottom: 0;
         }
         form{
             display:contents;
@@ -138,8 +139,8 @@
     </style>
     <script defer src="./clock2.js"></script>
     <!-- src 경로는 public 기준으로 시작 -->
-    <link rel="stylesheet" type="text/css" href="./buttonstyle.css"/>
-    <script defer src="./button.js"></script>
+    <link rel="stylesheet" type="text/css" href="./writestyle.css"/>
+    <script defer src="./writebutton.js"></script>
 </head>
 <body>
     <div class="container2">
@@ -149,45 +150,42 @@
     </div>
     <div class="flex">
         <div class="container">
-            <header>
-                <p>Title >>> 
-                    <input type="text" class='tinput' name="title" placeholder="로그인 후 이용해주세요!">
-                </p>
-                <p class="detail">
-                    <tb>Detail >></tb>
-                    <textarea name="detail" rows="5"
-                    placeholder="로그인 후 이용해주세요!"></textarea>
-                </p>
-            </header>
-            <form action='/signup_process' method="POST">
-                <signform>
-                    <div class='thing'>
-                        <p class='sign'>
-                            ID를 입력하세요.
-                        </p>
-                        <input type='text' class='signinput' name='user_id' placeholder="id">
-                        <p class='sign'>
-                            비밀번호를 입력하세요.
-                        </p>
-                        <input type='text' class='signinput' name='user_password' placeholder="password">
-                        <p class='sign'>
-                            사용할 별명을 입력하세요.
-                        </p>
-                        <input type='text' class='signinput' name='nick' placeholder="nickname">
-                        <div class="wrapper2">
-                            <button type="submit" class="second">
-                                <span>sign up</span>
-                                <div class="success">
-                                    <svg xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"  viewBox="0 0 29.756 29.756" style="enable-background:new 0 0 29.756 29.756;" xml:space="preserve">
-                                        
-                                    <path d="M29.049,5.009L28.19,4.151c-0.943-0.945-2.488-0.945-3.434,0L10.172,18.737l-5.175-5.173   c-0.943-0.944-2.489-0.944-3.432,0.001l-0.858,0.857c-0.943,0.944-0.943,2.489,0,3.433l7.744,7.752   c0.944,0.943,2.489,0.943,3.433,0L29.049,8.442C29.991,7.498,29.991,5.953,29.049,5.009z"/>
-                                    </svg>
-                                </div>
-                            </button>
-                        </div>
+            <form action='/form_process' method="POST">
+                <header>
+                    <p>Title >>> 
+                        <input type="text" name="title" placeholder="Title을 입력안할시 전송되지않습니다.">
+                    </p>
+                    <p class="detail">
+                        <tb>Detail >></tb>
+                        <textarea name="detail" rows="5"
+                        placeholder="구체적으로 계획을 입력하세요"></textarea>
+                    </p>
+                    <div class="writecenter">
+                        <button class="submit-button state-0">
+                            <span class="pre-state-msg">submit</span>
+                            <span class="current-state-msg hide">Sending...</span>
+                            <span class="done-state-msg hide">Done!</span>
+                        </button>
                     </div>
-                </signform>
+                </header>
             </form>
+            <schedule>
+                <div class="thing">
+                    <h2>a little title</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate ab tenetur at delectus aspernatur similique modi, est, debitis sit voluptate dolorem eligendi odio laborum magni nesciunt? Aliquam omnis molestiae at.</p>
+                </div>
+                <div class="thing">
+                    <h2>1234</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate ab tenetur at delectus aspernatur similique modi, est, debitis sit voluptate dolorem eligendi odio laborum magni nesciunt? Aliquam omnis molestiae at.</p>
+                </div>
+                <% let length = data.length-1 %>
+                <% for(let i=0; i<=length; i++){ %>
+                    <div class="thing">
+                       <h2><%=data[i].title%></h2>
+                       <p><%=data[i].description%></p>
+                    </div>
+                <% } %>
+            </schedule>
             <aside class="blank">
                 <h2 class="left"></h2>
             </aside>
