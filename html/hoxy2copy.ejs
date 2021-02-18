@@ -11,7 +11,6 @@
         }
         .container2{
             display: grid;
-            justify-content: center;
             grid-template-columns: 1fr;
             min-width: 850px;
         }
@@ -28,15 +27,24 @@
             grid-template-rows: minmax(180px, auto) minmax(800px, auto) 150px;
         }
         subhead{
+            display:flex;
+            justify-content: center;
             height:50px;
             background-color:#202d4e;
             box-shadow:0 3px 7px 0 rgb(0 0 0 / 25%);
             color:rgb;
+            position:relative;
         }
         .time{
             color:rgba(255, 255, 255, 0.904);
-            text-align:center;
             margin: 7px;
+            font-weight: 400;
+        }
+        .logout{
+            position:absolute;
+            left:80%;
+            color:rgba(255, 255, 255, 0.904);
+            margin:12.5px;
             font-weight: 400;
         }
         header {
@@ -146,6 +154,9 @@
     <div class="container2">
         <subhead>
             <h2 class="time">Time loading</h2>
+            <a href="/logout">
+                <h3 href='/logout_process' class='logout'>logout</h3>
+            </a>
         </subhead>
     </div>
     <div class="flex">
@@ -172,10 +183,6 @@
             <schedule>
                 <div class="thing">
                     <h2>a little title</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate ab tenetur at delectus aspernatur similique modi, est, debitis sit voluptate dolorem eligendi odio laborum magni nesciunt? Aliquam omnis molestiae at.</p>
-                </div>
-                <div class="thing">
-                    <h2>1234</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate ab tenetur at delectus aspernatur similique modi, est, debitis sit voluptate dolorem eligendi odio laborum magni nesciunt? Aliquam omnis molestiae at.</p>
                 </div>
                 <% let length = data.length-1 %>

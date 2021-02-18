@@ -1,16 +1,16 @@
 var express = require('express');
 var app = express();
-var router = require('./router/main.js')(app);
+// var router = require('./router/main.js')(app);
 var bodyparser = require('body-parser');
 // bodyparser 모듈 안써도 express. urlencoded, json 가능하다
 const db = require('./router/db.js');
 var bcrypt = require('bcryptjs');
+var flash = require('connect-flash');
 
 var cookieparser = require('cookie-parser');
 var session = require('express-session');
 var passport = require('passport')
 var LocalStrategy = require('passport-local').Strategy;
-const { request } = require('express');
 
 app.use(express.static('./public'));
 
@@ -67,7 +67,7 @@ passport.use(new LocalStrategy(
             //입력값과 일치하는 회원정보가 없을 경우
             else if(!result.length){
                 console.log('이메일을 다시입력해주세요.');
-                return done(null, false, {message: 'incorrect'})
+                return done(null, false, {message: '이메일이 일치하지 않습니다.'})
             }
             //입력값고 일치하는 회원정보가 있을경우
             else if(result.length){
@@ -90,7 +90,7 @@ passport.use(new LocalStrategy(
                     }
                     else{
                         console.log('비밀번호 실패')
-                        return done(null, false, {message: 'incorrect'})
+                        return done(null, false, {message: '비밀번호가 일치하지 않습니다.'})
                     }
                 });
             }   
@@ -105,26 +105,48 @@ passport.use(new LocalStrategy(
 //     //세션이 실행되기전까지는 실행시키지않는다
 //     test: false
 // }))
-// 이거 안써도 session 뜨는데?
+
+app.use(flash());
 
 app.set('views', __dirname + '/html');
 app.set('view engine', 'ejs');//이거 없어도 돌아가네
 app.engine('html', require('ejs').renderFile); //view engine을 ejs말고 html로 받아달라는코드인 것 같다.
 
+app.get('/',function(req,res){
+    console.log('----------------:',req.user);
+    console.log(req.session);
+    let fmsg = req.flash();
+    //와.... flash가 휘발성이라 console로 찍으면 바로날라가는거였네;;
+    //console찍기전에 변수에 담아두자
+    console.log('======================',fmsg);
+    let success= req.session.sign
+    req.session.sign = null;
+    res.render('hoxycopy',
+    {data: req.user, data2: fmsg.error, data3: success});
+ });
+ //기본페이지에서 req.session, user, cookies 다 안잡힌건 모듈을 main.js쪽에
+ //안설치해서 그랬다 라우터로 따로 빼놓으려면 모듈도 다 옮겨두자
+ //실행은 import로 부터가져와서 하는게 아니라 그곳에서 하는듯하다
+
 app.post('/login_process', passport.authenticate('local',{
-    successRedirect:'/form',
-    failureRedirect:'/'
-}))
+    successRedirect:'/',
+    failureRedirect:'/',
+    failureFlash:true
+}));
 //로그인 라우트
 
+app.get('/logout', function(req,res){
+    req.logout();
+    res.redirect('/');
+});
 
 
 app.get("/form", function(req, res){
     //deserialize의 userinfo는 라우터의 req.user 로 넘어온다.
-    // if(!req.user){
-    //     res.send('404');
-    //     return false;
-    // }
+    if(!req.user){
+        res.send('404');
+        return false;
+    }
     console.log(req.session);
     db.query('SELECT * FROM plan', function(err, result){
         res.render('hoxy2copy',{data: result});
@@ -159,8 +181,14 @@ app.post("/signup_process", function(req,res){
     let nick=body.nick;
     console.log(hash_pass);
     db.query(`INSERT INTO users(user_id, user_password, nick) VALUES('${body.user_id}','${hash_pass}','${nick}')`);
-    res.send('회원가입완료');
+    req.session.sign= true;
+    res.redirect('/');
 })
+
+// app.get("/direct_login", function(req,res){
+//     res.render('hoxycopy2',{data: req.user, data2: '', data3:req.session.sign_id});
+// });
+// 모르겠다 회원가입 후 바로 로그인되있도록 어떻게할까
 
 var server = app.listen(3000, function () {
     console.log("Express server has started on port 3000");
