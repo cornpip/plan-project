@@ -143,11 +143,12 @@ app.get('/logout', function(req,res){
 
 app.get("/form", function(req, res){
     //deserialize의 userinfo는 라우터의 req.user 로 넘어온다.
-    if(!req.user){
-        res.send('404');
-        return false;
-    }
+    // if(!req.user){
+    //     res.send('404');
+    //     return false;
+    // }
     console.log(req.session);
+    console.log(req.user);
     db.query('SELECT * FROM plan', function(err, result){
         res.render('hoxy2copy',{data: result});
     })
@@ -167,6 +168,27 @@ app.post("/form_process", function(req, res){
         db.query(`INSERT INTO plan(title, description) VALUES('${body.title}','${body.detail}')`)
         res.redirect('/form');
     }
+})
+
+app.post("/delete_process", function(req, res){
+    let body= req.body;
+    console.log(body.title);
+    console.log(body.detail);
+    if(body.title == ''){
+        res.redirect('/form');
+    }
+    else if(body.detail == ''){
+        res.redirect('/form');
+    }
+    else{
+        db.query(`INSERT INTO plan(title, description) VALUES('${body.title}','${body.detail}')`)
+        res.redirect('/form');
+    }
+})
+
+app.post('/test', function(req,res){
+    console.log(req.body);
+    res.send('123');
 })
 
 app.get("/signup", function (req, res) {

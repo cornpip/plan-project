@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=0.45">
     <title>Document</title>
     <style>
         body{
@@ -144,6 +144,25 @@
         form{
             display:contents;
         }
+        .crudbox{
+            text-align: right;
+            font-size: 0.9em;
+        }
+        .del{
+            color:rgba(179, 2, 2, 0.836);
+            text-decoration: none;
+        }
+        .crud{
+            border: none; 
+            background-color: rgba(0,0,0,0); 
+            color: skyblue; 
+            padding: 5px;
+        }
+        .crud:hover{
+            background-color: skyblue;
+            color:white;
+            cursor: pointer;
+        }
     </style>
     <script defer src="./clock2.js"></script>
     <!-- src 경로는 public 기준으로 시작 -->
@@ -173,6 +192,7 @@
                     </p>
                     <div class="writecenter">
                         <button class="submit-button state-0">
+                        <!-- button의 default type값은 submit이다. button으로 쓰고싶으면 주의-->
                             <span class="pre-state-msg">submit</span>
                             <span class="current-state-msg hide">Sending...</span>
                             <span class="done-state-msg hide">Done!</span>
@@ -187,10 +207,17 @@
                 </div>
                 <% let length = data.length-1 %>
                 <% for(let i=0; i<=length; i++){ %>
-                    <div class="thing">
-                       <h2><%=data[i].title%></h2>
-                       <p><%=data[i].description%></p>
-                    </div>
+                    <form action="/test" method="POST" >
+                        <div class="thing">
+                        <input type="hidden" name="plantitle" value='<%-data[i].title%>'>
+                        <h2><%=data[i].title%></h2>
+                        <p><%=data[i].description%></p>
+                        <div class="crudbox">
+                                <button class="crud">수정</button>
+                                <a href="" class="del">삭제</a>
+                        </div>
+                        </div>
+                    </form>
                 <% } %>
             </schedule>
             <aside class="blank">
