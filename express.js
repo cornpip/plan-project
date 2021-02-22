@@ -73,8 +73,8 @@ passport.use(new LocalStrategy(
             else if(result.length){
                 console.log('이메일 통과');0
                 console.log(result);
-                // JSON.stringify =코드에서 json 객체만을 string 객체로 변환시켜주는 듯(배열은 그대로)
-                // JSON.parse = string 객체를 json 객체로 변환시켜줌 
+                // JSON.stringify =자바스크립트를 JSON 문자열로 변환
+                // JSON.parse = JSON문자열을 json 객체로 변환시켜줌 
                 let json = JSON.stringify(result[0]);
                 let userinfo = JSON.parse(json);
                 // 확인하고 싶으면 console.log
@@ -170,25 +170,33 @@ app.post("/form_process", function(req, res){
     }
 })
 
-app.post("/delete_process", function(req, res){
-    let body= req.body;
-    console.log(body.title);
-    console.log(body.detail);
-    if(body.title == ''){
-        res.redirect('/form');
-    }
-    else if(body.detail == ''){
-        res.redirect('/form');
-    }
-    else{
-        db.query(`INSERT INTO plan(title, description) VALUES('${body.title}','${body.detail}')`)
-        res.redirect('/form');
-    }
+app.post("/delete", function(req, res){
+    let body = req.body;
+    console.log("delete=========",body);
+    let sql = `DELETE FROM plan WHERE title=?`
+    db.query(sql, [body.dtitle])
+    res.redirect('/form');
 })
 
-app.post('/test', function(req,res){
-    console.log(req.body);
-    res.send('123');
+app.post('/update', function(req,res){
+    let body = req.body;
+    console.log('---update:', body);
+    db.query('SELECT * FROM plan', function(err, result){
+        res.render('update',
+        {data: result, 
+        uptitle: body.uptitle,
+        updesc: body.updesc})
+    });
+});
+
+app.post('/update_process', function(req,res){
+    let body = req.body;
+    console.log(body);
+    let sql = `UPDATE plan SET title=? WHERE title=?`
+    let sql2 = `UPDATE plan SET description=? WHERE title=?`
+    db.query(sql, [body.uptitle2, body.uptitle1]);
+    db.query(sql2, [body.updetail, body.uptitle1]);
+    res.redirect('/form');
 })
 
 app.get("/signup", function (req, res) {

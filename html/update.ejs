@@ -177,27 +177,6 @@
     <!-- src 경로는 public 기준으로 시작 -->
     <link rel="stylesheet" type="text/css" href="./writestyle.css"/>
     <script defer src="./writebutton.js"></script>
-
-    <script>
-        let stringdata='<%- JSON.stringify(data) %>'
-        // let data='<%-data%>' 
-        // 엄청 헤맸다. 결론
-        // 노드쪽에서 stringify 하던 script에서 하던 stringify 로 받아야한다
-        // stringify로 받아도 <%=data%> 이렇게 받으면 값이 휘날린다
-        // 앞으로 JSON객체로 넣으면 [object]이런식으로만 뜬다면
-        // JSON 문자열(stringify)로 넣어볼 생각하자
-        //(내부적으로 문자열로 받게끔 되있는게 있고 객체로 받게끔 되있는게 있는듯)
-        // JSON문자열에서는 data[0].title 이렇게 찍어봐도 undefined 나온다.
-        // 그리고 script쪽에서 ejs 쓸때 이상하게 넘어오는지 확인부터하고
-        // 이상하다 싶으면 <%- %> <%= %> 다체크해보자.
-        let data= JSON.parse(stringdata);
-
-        //받는건 스트링으로 데이터 찍으려면 parse로 해야되네
-        //node쪽에서 parse로 넘겨도 못읽음
-         for(let i=0; i<4; i++){
-             alert(data[i].title);
-         } 
-    </script>
 </head>
 <body>
     <div class="container2">
@@ -210,20 +189,22 @@
     </div>
     <div class="flex">
         <div class="container">
-            <form action='/form_process' method="POST">
+            <form action='/update_process' method="POST">
                 <header>
                     <p>Title >>> 
-                        <input type="text" name="title" placeholder="Title을 입력없을시 전송되지않습니다.">
+                        <input type="hidden" name="uptitle1" value="<%-uptitle%>">
+                        <input type="text" name="uptitle2" placeholder="Title을 입력없을시 전송되지않습니다."
+                         value="<%-uptitle%>">
                     </p>
                     <p class="detail">
                         <tb>Detail >></tb>
-                        <textarea name="detail" rows="5"
-                        placeholder="구체적으로 계획을 입력하세요"></textarea>
+                        <textarea name="updetail" rows="5"
+                        placeholder="구체적으로 계획을 입력하세요"><%=updesc%></textarea>
                     </p>
                     <div class="writecenter">
                         <button class="submit-button state-0">
                         <!-- button의 default type값은 submit이다. button으로 쓰고싶으면 주의-->
-                            <span class="pre-state-msg">submit</span>
+                            <span class="pre-state-msg">Update</span>
                             <span class="current-state-msg hide">Sending...</span>
                             <span class="done-state-msg hide">Done!</span>
                         </button>
@@ -237,7 +218,7 @@
                 </div>
                 <% let length = data.length-1 %>
                 <% for(let i=0; i<=length; i++){ %>
-                        <div class="thing">
+                    <div class="thing">
                         <h2><%=data[i].title%></h2>
                         <p><%=data[i].description%></p>
                         <div class="crudbox">
@@ -246,12 +227,12 @@
                                 <input type="hidden" name="updesc" value='<%-data[i].description%>'>
                                 <button class="crud">수정</button>
                             </form>
-                            <form action="/delete" method="POST" id='<%-data[i].title%>'>
+                            <form action="/delete" method="POST" >
                                 <input type="hidden" name="dtitle" value='<%-data[i].title%>'>
-                                <button class="del" type="button" onclick=test12()>삭제</button>
+                                <button class="del">삭제</button>
                             </form>
                         </div>
-                        </div>
+                    </div>
                 <% } %>
             </schedule>
             <aside class="blank">
