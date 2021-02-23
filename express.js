@@ -121,7 +121,7 @@ app.get('/',function(req,res){
     console.log('======================',fmsg);
     let success= req.session.sign
     req.session.sign = null;
-    res.render('hoxycopy',
+    res.render('homepage',
     {data: req.user, data2: fmsg.error, data3: success});
  });
  //기본페이지에서 req.session, user, cookies 다 안잡힌건 모듈을 main.js쪽에
@@ -143,14 +143,24 @@ app.get('/logout', function(req,res){
 
 app.get("/form", function(req, res){
     //deserialize의 userinfo는 라우터의 req.user 로 넘어온다.
-    // if(!req.user){
-    //     res.send('404');
-    //     return false;
-    // }
+
     console.log(req.session);
     console.log(req.user);
+    if(!req.user){
+        res.send('로그인 필요');
+        return false;
+    }
+    let today = new Date();
+    let date = today.toLocaleDateString();
+    let hour = today.getHours();
+    if(hour<13){
+        hour += 'a.m'
+    }else{
+        hour=hour-12+'p.m'
+    }
     db.query('SELECT * FROM plan', function(err, result){
-        res.render('hoxy2copy',{data: result});
+        res.render('form(dok)',
+        {data: result, nick: req.user.nick, schtime:`${date}     ${hour}`});
     })
 })
 

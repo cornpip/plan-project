@@ -190,13 +190,20 @@
         // JSON문자열에서는 data[0].title 이렇게 찍어봐도 undefined 나온다.
         // 그리고 script쪽에서 ejs 쓸때 이상하게 넘어오는지 확인부터하고
         // 이상하다 싶으면 <%- %> <%= %> 다체크해보자.
-        let data= JSON.parse(stringdata);
+        let parsedata= JSON.parse(stringdata);
 
         //받는건 스트링으로 데이터 찍으려면 parse로 해야되네
         //node쪽에서 parse로 넘겨도 못읽음
-         for(let i=0; i<4; i++){
-             alert(data[i].title);
-         } 
+        function del(i){
+            if (confirm("삭제하시겠습니까?") != 0) {
+                document.getElementById(parsedata[i].title).submit();
+            } else {
+            }
+        }
+        //  for(let i=0; i<2; i++){
+        //     alert('gi');
+        //     alert(getElementById(data[i].title).title);
+        // } 
     </script>
 </head>
 <body>
@@ -237,10 +244,14 @@
                 </div>
                 <% let length = data.length-1 %>
                 <% for(let i=0; i<=length; i++){ %>
-                        <div class="thing">
+                    <div class="thing">
                         <h2><%=data[i].title%></h2>
                         <p><%=data[i].description%></p>
                         <div class="crudbox">
+                            <%= schtime %>
+                            <% if(nick){ %>
+                                <%= nick %>
+                            <%} %>
                             <form action="/update" method="POST" >
                                 <input type="hidden" name="uptitle" value='<%-data[i].title%>'>
                                 <input type="hidden" name="updesc" value='<%-data[i].description%>'>
@@ -248,10 +259,10 @@
                             </form>
                             <form action="/delete" method="POST" id='<%-data[i].title%>'>
                                 <input type="hidden" name="dtitle" value='<%-data[i].title%>'>
-                                <button class="del" type="button" onclick=test12()>삭제</button>
+                                <button class="del" type="button" onclick='del(<%- i %>)'>삭제</button>
                             </form>
                         </div>
-                        </div>
+                    </div>
                 <% } %>
             </schedule>
             <aside class="blank">

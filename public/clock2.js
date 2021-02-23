@@ -1,6 +1,3 @@
-console.log("hi");
-
-
 var lookclock = document.querySelector(".time");
 function clock(){
     let today = new Date();
@@ -13,6 +10,11 @@ function init(){
 }
 init();
 
-console.log("hi");
+//-----------------------------------------------------------
 
-
+function schtime(){
+    let today = new Date();
+    let time= today.toLocaleDateString();
+    let property = document.getElementById('test');
+    property.innerHTML = time;
+}

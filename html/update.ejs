@@ -177,6 +177,16 @@
     <!-- src 경로는 public 기준으로 시작 -->
     <link rel="stylesheet" type="text/css" href="./writestyle.css"/>
     <script defer src="./writebutton.js"></script>
+    <script>
+        let stringdata='<%- JSON.stringify(data) %>'
+        let parsedata= JSON.parse(stringdata);
+        function del(i){
+            if (confirm("삭제하시겠습니까?") != 0) {
+                document.getElementById(parsedata[i].title).submit();
+            } else {
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="container2">
@@ -227,9 +237,9 @@
                                 <input type="hidden" name="updesc" value='<%-data[i].description%>'>
                                 <button class="crud">수정</button>
                             </form>
-                            <form action="/delete" method="POST" >
+                            <form action="/delete" method="POST" id='<%-data[i].title%>'>
                                 <input type="hidden" name="dtitle" value='<%-data[i].title%>'>
-                                <button class="del">삭제</button>
+                                <button class="del" type="button" onclick='del(<%- i %>)'>삭제</button>
                             </form>
                         </div>
                     </div>
