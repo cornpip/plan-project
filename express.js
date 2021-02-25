@@ -159,8 +159,15 @@ app.get("/form", function(req, res){
         hour=hour-12+'p.m'
     }
     db.query('SELECT * FROM plan', function(err, result){
-        res.render('form(dok)',
-        {data: result, nick: req.user.nick, schtime:`${date}     ${hour}`});
+        db.query(`SELECT date_format(firsttime,'%y-%m-%d:%l%p') FROM plan`, function(err, result2){
+            let c = JSON.stringify(result2);
+            let result3 = JSON.parse(c);
+            console.log('2222222222222222222', result2[0]["date_format(firsttime,'%y-%m-%d:%l%p')"]);
+            console.log('testtesttest', result2);
+            console.log('ttqqttqtqtqqtt',result3);
+            res.render('form(dok)',
+            {data: result, nick: req.user.nick, seetime:result2});
+        })
     })
 })
 
@@ -195,18 +202,33 @@ app.post('/update', function(req,res){
         res.render('update',
         {data: result, 
         uptitle: body.uptitle,
-        updesc: body.updesc})
+        updesc: body.updesc,
+        identifier: body.id })
     });
 });
 
 app.post('/update_process', function(req,res){
     let body = req.body;
     console.log(body);
-    let sql = `UPDATE plan SET title=? WHERE title=?`
-    let sql2 = `UPDATE plan SET description=? WHERE title=?`
-    db.query(sql, [body.uptitle2, body.uptitle1]);
-    db.query(sql2, [body.updetail, body.uptitle1]);
+    // let sql = `UPDATE plan SET title=? WHERE title=?`
+    // let sql2 = `UPDATE plan SET description=? WHERE title=?`
+    // let sql3 = `UPDATE plan SET lasttime=now() WHERE title=?`
+    // 하나하나 넣을 필요없다
+
+    let sqlok =`UPDATE plan SET lasttime=now(), description=?, title=? WHERE id=?`
+
+    // let sql = `UPDATE plan 
+    // SET lasttime=now(), 
+    // description=CASE id WHEN ? THEN ? ELSE description END
+    // , title=CASE id WHEN ? THEN ? ELSE title END WHERE id IN(?)`
+    // CASE WHEN THEN ELSE
+    // mysql의 조건문이다 (참고)
+
+    ///db.query(sql, [body.id, body.updetail, body.id, body.uptitle2, body.id]);
+    db.query(sqlok,[body.updetail, body.uptitle2, body.id]);
     res.redirect('/form');
+
+    // !!제목 중복으로 수정하면 다음수정부터 같이 바뀌네!! id끌고와서 where로해결
 })
 
 app.get("/signup", function (req, res) {

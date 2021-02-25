@@ -248,11 +248,12 @@
                         <h2><%=data[i].title%></h2>
                         <p><%=data[i].description%></p>
                         <div class="crudbox">
-                            <%= schtime %>
+                            <%= seetime %>
                             <% if(nick){ %>
                                 <%= nick %>
                             <%} %>
                             <form action="/update" method="POST" >
+                                <input type="hidden" name="id" value='<%- data[i].id%>'>
                                 <input type="hidden" name="uptitle" value='<%-data[i].title%>'>
                                 <input type="hidden" name="updesc" value='<%-data[i].description%>'>
                                 <button class="crud">수정</button>
