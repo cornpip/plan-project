@@ -145,35 +145,24 @@ app.get("/form", function(req, res){
     //deserialize의 userinfo는 라우터의 req.user 로 넘어온다.
 
     console.log(req.session);
-    console.log(req.user);
+    console.log('qweewqeqweqwqew',req.user);
     if(!req.user){
         res.send('로그인 필요');
         return false;
     }
-    let today = new Date();
-    let date = today.toLocaleDateString();
-    let hour = today.getHours();
-    if(hour<13){
-        hour += 'a.m'
-    }else{
-        hour=hour-12+'p.m'
-    }
     db.query('SELECT * FROM plan', function(err, result){
-        db.query(`SELECT date_format(firsttime,'%y-%m-%d:%l%p') FROM plan`, function(err, result2){
-            let c = JSON.stringify(result2);
-            let result3 = JSON.parse(c);
-            console.log('2222222222222222222', result2[0]["date_format(firsttime,'%y-%m-%d:%l%p')"]);
-            console.log('testtesttest', result2);
-            console.log('ttqqttqtqtqqtt',result3);
+        db.query(`SELECT date_format(firsttime,'%y-%m-%d:%l%p'),
+        date_format(lasttime,'%y-%m-%d:%l%p') FROM plan`, function(err, result2){
+            console.log('2222222222222222222', result2[3]["date_format(lasttime,'%y-%m-%d:%l%p')"]);
             res.render('form(dok)',
-            {data: result, nick: req.user.nick, seetime:result2});
+            {data: result, seetime:result2});
         })
     })
 })
 
 app.post("/form_process", function(req, res){
     let body= req.body;
-    console.log(body.title);
+    console.log('515151515',body.title);
     console.log(body.detail);
     if(body.title == ''){
         res.redirect('/form');
@@ -182,7 +171,8 @@ app.post("/form_process", function(req, res){
         res.redirect('/form');
     }
     else{
-        db.query(`INSERT INTO plan(title, description) VALUES('${body.title}','${body.detail}')`)
+        db.query(`INSERT INTO plan(title, description, nick) 
+        VALUES('${body.title}','${body.detail}','${req.user.nick}')`);
         res.redirect('/form');
     }
 })
