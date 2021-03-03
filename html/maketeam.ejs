@@ -4,10 +4,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=0.45">
-    <!-- initial-scale=1 로하면 모바일서 짤리더라 -->
-    <!-- 아이패드는 좌우여백은 안보이고 컨텐츠있는곳만 보여
-    알아서 컨텐츠로만 잡아주는 뭐가 있나?
-    갤럭시는 그대로 좌우여백도 보여-->
     <title>Document</title>
     <style>
         body{
@@ -28,13 +24,11 @@
             display: -ms-grid;
             -ms-grid-columns: 100px repeat(4, 1fr) 100px;
             -ms-grid-rows:150px repeat(5, minmax(180px, auto));
-            grid-template-columns: repeat(4, 200px);
-            grid-template-rows: minmax(180px, auto) repeat(4, minmax(180px, auto));
-            gap: 15px 15px;
+            grid-template-columns: 800px;
+            grid-template-rows: minmax(180px, auto) minmax(720px, auto);
         }
         subhead{
-            display: flex;
-            justify-content: center;
+            grid-row: 1/1;
             height:50px;
             background-color:#202d4e;
             box-shadow:0 3px 7px 0 rgb(0 0 0 / 25%);
@@ -43,46 +37,29 @@
         }
         .time{
             color:rgba(255, 255, 255, 0.904);
+            text-align:center;
             margin: 7px;
             font-weight: 400;
         }
-        .logout{
-            position:absolute;
-            left:80%;
-            color:rgba(255, 255, 255, 0.904);
-            margin:12.5px;
-            font-weight: 400;
-        }
         header {
-            grid-column: 1/5;
+            grid-column: 1/1;
             grid-row:1/1;
 
         }
         .blank { 
-            grid-row:2/7;
+            grid-row:2/2;
             grid-column:1/1;
             border-left:2px groove rgba(179, 2, 2, 0.2);
             display: flex;
             align-items:center;
         }
         .blank2{
-            grid-column: 4/4;
-            grid-row: 1/7;
+            grid-column: 1/1;
+            grid-row: 1/3;
             border-right:2px groove rgba(179, 2, 2, 0.2);
             display:flex;
             align-items:center;
             justify-content: flex-end;
-        }
-        default{
-            box-shadow:2px 3px 4px 0 rgb(0 0 0 / 20%);
-            border-radius:10px 100px / 120px;
-            border:2px solid burlywood;
-            grid-column: 2/4;
-            grid-row: 2/4;
-            display:flex;
-            justify-content:center;
-            align-items: center;
-            flex-direction:column;
         }
         .left{
             margin:0;
@@ -106,21 +83,19 @@
             margin:5px;
             /* vertical-align:top; block요소에서 적용 안됨*/
         }
-        input[type="text"]{
+        input.tinput{
             line-height: normal;
             padding: .8em .5em;
             width: 79%;
             border:0.2em solid burlywood;
         }
-        input.hi{
+        input.signinput{
             line-height: normal;
             padding: .8em .5em;
-            width: 80%;
-            height: 8%;
-            border:0.1em solid burlywood;
-            margin: 0.5em;
+            width: 85%;
+            box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+            border: white;
         }
-
         textarea{
             padding: .6em .5em;
             width:80%;
@@ -132,6 +107,30 @@
             flex-direction: row;
             align-items: center;
             gap:0.3em;
+        }
+        signform{
+            position:relative;
+            grid-column:1/1;
+            grid-row:2/2;
+        }
+        .sign{
+            margin:0.5em;
+        }
+        .thing {
+            position:absolute;
+            padding: 1rem;
+            box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+            border-radius: 0.5rem;
+            width: 80%;
+            height: 80%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            color: #242424; 
+            font-size: 15px; 
+            font-weight: 400; 
+            line-height: 32px; 
         }
         form{
             display:contents;
@@ -146,18 +145,13 @@
     <div class="container2">
         <subhead>
             <h2 class="time">Time loading</h2>
-            <%if(data){ %>
-                <a href="/logout">
-                    <h3 href='/logout_process' class='logout'>logout</h3>
-                </a>
-            <%} %>
         </subhead>
     </div>
     <div class="flex">
         <div class="container">
             <header>
                 <p>Title >>> 
-                    <input type="text" name="title" placeholder="로그인 후 이용해주세요!">
+                    <input type="text" class='tinput' name="title" placeholder="로그인 후 이용해주세요!">
                 </p>
                 <p class="detail">
                     <tb>Detail >></tb>
@@ -165,34 +159,20 @@
                     placeholder="로그인 후 이용해주세요!"></textarea>
                 </p>
             </header>
-            <default>
-                <% if(!data){ %>
-                    <%if(data2=='Missing credentials'){ %>
-                        아이디와 비밀번호를 입력하세요.
-                    <%}else if(data3){ %>
-                        회원가입이 완료되었습니다! 로그인이가능합니다.
-                    <%}else{ %>
-                    <%= data2%>
-                    <%} %>
-                    <form action='/login_process' method='POST'>
-                        <input class='hi' type="text" name="user_id" placeholder="아이디를 입력해주세요.">
-                        <input class='hi' type="text" name="user_password" placeholder="비밀번호를 입력해주세요.">
-                        <div class="wrapper">
-                            <button type="submit" class="first">
-                                <span>login</span>
-                                <div class="success">
-                                    <svg xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"  viewBox="0 0 29.756 29.756" style="enable-background:new 0 0 29.756 29.756;" xml:space="preserve">
-                                        
-                                    <path d="M29.049,5.009L28.19,4.151c-0.943-0.945-2.488-0.945-3.434,0L10.172,18.737l-5.175-5.173   c-0.943-0.944-2.489-0.944-3.432,0.001l-0.858,0.857c-0.943,0.944-0.943,2.489,0,3.433l7.744,7.752   c0.944,0.943,2.489,0.943,3.433,0L29.049,8.442C29.991,7.498,29.991,5.953,29.049,5.009z"/>
-                                    </svg>
-                                </div>
-                            </button>
-                        </div>
-                    </form>
-                    <form action="/signup">
+            <form method="POST">
+                <signform>
+                    <div class='thing'>
+                        <p class='sign'>
+                            team name을 입력하세요
+                        </p>
+                        <input type='text' class='signinput' name='team_name' placeholder="name">
+                        <p class='sign'>
+                            team plan 입장번호를 입력하세요.(최소 4자리이상, 특수문자, 숫자, 영어 등 섞기를 권장)
+                        </p>
+                        <input type='text' class='signinput' name='team_pass' placeholder="password">
                         <div class="wrapper2">
-                            <button type="submit" class="second">
-                                <span>sign up</span>
+                            <button type="button" id="teambtn" class="second">
+                                <span>make team</span>
                                 <div class="success">
                                     <svg xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"  viewBox="0 0 29.756 29.756" style="enable-background:new 0 0 29.756 29.756;" xml:space="preserve">
                                         
@@ -201,14 +181,9 @@
                                 </div>
                             </button>
                         </div>
-                    </form>
-                <%}else{ %>
-                    <h2>로그인 되었습니다.</h2>
-                    <a href=/form>move to plan</a>
-                    <br>
-                    <a href=/maketeam>make team plan</a>
-                <%} %>
-            </default>
+                    </div>
+                </signform>
+            </form>
             <aside class="blank">
                 <h2 class="left"></h2>
             </aside>
@@ -217,5 +192,25 @@
             </aside>
         </div>
     </div>
+    <script>
+        document.getElementById('teambtn').addEventListener('click', function(){
+        var inputdata = document.forms[0].elements[0].value;
+        var inputdata2 = document.forms[0].elements[1].value;
+        
+        sendAjax(inputdata, inputdata2);
+        })
+    </script>
+    <script>
+        function sendAjax(data1, data2){
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/reqteam', true);
+
+            var data = {'teamname' : data1,'teampass': data2};
+            data = JSON.stringify(data);
+            xhr.setRequestHeader('Content-type', 'application/json');
+            xhr.send(data);
+
+        }
+    </script>
 </body>
 </html>

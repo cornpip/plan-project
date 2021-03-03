@@ -145,7 +145,17 @@
             display:contents;
         }
         .crudbox{
+            display:grid;
+            grid-template-columns: 1fr;
+        }
+        .crudboxup{
+            grid-column:1/1;
+            grid-row:1/1;
             text-align: right;
+        }
+        .crudboxnick{
+            grid-row:1/1;
+            grid-column:1/1;
             font-size: 0.9em;
         }
         .del{
@@ -231,17 +241,29 @@
                     <div class="thing">
                         <h2><%=data[i].title%></h2>
                         <p><%=data[i].description%></p>
-                        <div class="crudbox">
-                            <form action="/update" method="POST" >
-                                <input type="hidden" name="id" value='<%- data[i].id%>'>
-                                <input type="hidden" name="uptitle" value='<%-data[i].title%>'>
-                                <input type="hidden" name="updesc" value='<%-data[i].description%>'>
-                                <button class="crud">수정</button>
-                            </form>
-                            <form action="/delete" method="POST" id='<%-data[i].title%>'>
-                                <input type="hidden" name="dtitle" value='<%-data[i].title%>'>
-                                <button class="del" type="button" onclick='del(<%- i %>)'>삭제</button>
-                            </form>
+                        <div class='crudbox'>
+                            <div class="crudboxnick">
+                                <%if(seetime[i]["date_format(lasttime,'%y-%m-%d:%l%p')"]){%>
+                                    수정됨 <%=   seetime[i]["date_format(lasttime,'%y-%m-%d:%l%p')"] %>
+                                    <%}else{ %>
+                                    <%=   seetime[i]["date_format(firsttime,'%y-%m-%d:%l%p')"] %>
+                                    <%}%>
+                                    <% if(data[i].nick){ %>
+                                        <%= data[i].nick %>
+                                    <%} %>
+                            </div>
+                            <div class="crudboxup">
+                                <form action="/update" method="POST" >
+                                    <input type="hidden" name="id" value='<%- data[i].id%>'>
+                                    <input type="hidden" name="uptitle" value='<%-data[i].title%>'>
+                                    <input type="hidden" name="updesc" value='<%-data[i].description%>'>
+                                    <button class="crud">수정</button>
+                                </form>
+                                <form action="/delete" method="POST" id='<%-data[i].title%>'>
+                                    <input type="hidden" name="dtitle" value='<%-data[i].title%>'>
+                                    <button class="del" type="button" onclick='del(<%- i %>)'>삭제</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 <% } %>

@@ -140,7 +140,6 @@ app.get('/logout', function(req,res){
     res.redirect('/');
 });
 
-
 app.get("/form", function(req, res){
     //deserialize의 userinfo는 라우터의 req.user 로 넘어온다.
 
@@ -189,11 +188,15 @@ app.post('/update', function(req,res){
     let body = req.body;
     console.log('---update:', body);
     db.query('SELECT * FROM plan', function(err, result){
-        res.render('update',
-        {data: result, 
-        uptitle: body.uptitle,
-        updesc: body.updesc,
-        identifier: body.id })
+        db.query(`SELECT date_format(firsttime,'%y-%m-%d:%l%p'),
+        date_format(lasttime,'%y-%m-%d:%l%p') FROM plan`, function(err, result2){
+            res.render('update',
+            {data: result, 
+            uptitle: body.uptitle,
+            updesc: body.updesc,
+            identifier: body.id,
+            seetime: result2 })
+        });
     });
 });
 
@@ -241,6 +244,19 @@ app.post("/signup_process", function(req,res){
 //     res.render('hoxycopy2',{data: req.user, data2: '', data3:req.session.sign_id});
 // });
 // 모르겠다 회원가입 후 바로 로그인되있도록 어떻게할까
+
+
+app.get('/maketeam', function(req,res){
+    res.render('maketeam');
+})
+
+app.post('/reqteam', function(req,res){
+    var body=req.body
+    db.query(`INSERT INTO teamplan(teamname, teampass) 
+    VALUES('${body.teamname}','${body.teampass}')`);
+    console.log(body);
+    res.redirect('/');
+})
 
 var server = app.listen(3000, function () {
     console.log("Express server has started on port 3000");
