@@ -247,15 +247,19 @@ app.post("/signup_process", function(req,res){
 
 
 app.get('/maketeam', function(req,res){
+    if(!req.user){
+        res.send('로그인 필요');
+        return false;
+    }
     res.render('maketeam');
 })
 
 app.post('/reqteam', function(req,res){
     var body=req.body
-    db.query(`INSERT INTO teamplan(teamname, teampass) 
-    VALUES('${body.teamname}','${body.teampass}')`);
+     db.query(`INSERT INTO teamplan(teamname, teampass) 
+     VALUES('${body.teamname}','${body.teampass}')`);
     console.log(body);
-    res.redirect('/');
+    res.end();
 })
 
 var server = app.listen(3000, function () {

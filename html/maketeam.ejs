@@ -171,7 +171,7 @@
                         </p>
                         <input type='text' class='signinput' name='team_pass' placeholder="password">
                         <div class="wrapper2">
-                            <button type="button" id="teambtn" class="second">
+                            <button type="submit" id="teambtn" class="second">
                                 <span>make team</span>
                                 <div class="success">
                                     <svg xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"  viewBox="0 0 29.756 29.756" style="enable-background:new 0 0 29.756 29.756;" xml:space="preserve">
@@ -192,6 +192,9 @@
             </aside>
         </div>
     </div>
+    <!-- ajax는 수정에서 쓸만한듯 ajax쓰면 process없이 바로 홈으로 갈 줄 알았는데
+     res.redirect가 안먹힌다. 찾아보니까 ajax통신에서 서버의 res는 값을 넘기는 것만 가능하데
+    클라쪽에서 페이지옮기면 가능-->
     <script>
         document.getElementById('teambtn').addEventListener('click', function(){
         var inputdata = document.forms[0].elements[0].value;
@@ -210,6 +213,13 @@
             xhr.setRequestHeader('Content-type', 'application/json');
             xhr.send(data);
 
+
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState==4 && xhr.status==200){
+                    alert('team plan을 만들었습니다')
+                    window.location.replace("../");
+                }
+            }
         }
     </script>
 </body>
