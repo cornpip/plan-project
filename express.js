@@ -142,17 +142,19 @@ app.get('/logout', function(req,res){
 
 app.get("/form", function(req, res){
     //deserialize의 userinfo는 라우터의 req.user 로 넘어온다.
-
+    let nick
     console.log(req.session);
+   
+    // nick = req.user.nick
     console.log('qweewqeqweqwqew',req.user);
     if(!req.user){
         res.send('로그인 필요');
         return false;
     }
-    db.query('SELECT * FROM plan', function(err, result){
-        db.query(`SELECT date_format(firsttime,'%y-%m-%d:%l%p'),
-        date_format(lasttime,'%y-%m-%d:%l%p') FROM plan`, function(err, result2){
-            console.log('2222222222222222222', result2[3]["date_format(lasttime,'%y-%m-%d:%l%p')"]);
+    db.query(`SELECT * FROM plan WHERE nick=?`,[req.user.nick], function(err, result){
+        db.query(`SELECT date_format(firsttime,'%y-%m-%d__%l%p'),
+        date_format(lasttime,'%y-%m-%d__%l%p') FROM plan WHERE nick=?`,[req.user.nick], function(err, result2){
+            console.log(result.length);
             res.render('form(dok)',
             {data: result, seetime:result2});
         })
@@ -187,9 +189,9 @@ app.post("/delete", function(req, res){
 app.post('/update', function(req,res){
     let body = req.body;
     console.log('---update:', body);
-    db.query('SELECT * FROM plan', function(err, result){
-        db.query(`SELECT date_format(firsttime,'%y-%m-%d:%l%p'),
-        date_format(lasttime,'%y-%m-%d:%l%p') FROM plan`, function(err, result2){
+    db.query('SELECT * FROM plan WHERE nick=?',[req.user.nick], function(err, result){
+        db.query(`SELECT date_format(firsttime,'%y-%m-%d__%l%p'),
+        date_format(lasttime,'%y-%m-%d__%l%p') FROM plan WHERE nick=?`,[req.user.nick], function(err, result2){
             res.render('update',
             {data: result, 
             uptitle: body.uptitle,

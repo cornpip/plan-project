@@ -243,10 +243,10 @@
                         <p><%=data[i].description%></p>
                         <div class='crudbox'>
                             <div class="crudboxnick">
-                                <%if(seetime[i]["date_format(lasttime,'%y-%m-%d:%l%p')"]){%>
-                                    수정됨 <%=   seetime[i]["date_format(lasttime,'%y-%m-%d:%l%p')"] %>
+                                <%if(seetime[i]["date_format(lasttime,'%y-%m-%d__%l%p')"]){%>
+                                    수정됨 <%=   seetime[i]["date_format(lasttime,'%y-%m-%d__%l%p')"] %>
                                     <%}else{ %>
-                                    <%=   seetime[i]["date_format(firsttime,'%y-%m-%d:%l%p')"] %>
+                                    <%=   seetime[i]["date_format(firsttime,'%y-%m-%d__%l%p')"] %>
                                     <%}%>
                                     <% if(data[i].nick){ %>
                                         <%= data[i].nick %>

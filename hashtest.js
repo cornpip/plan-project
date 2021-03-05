@@ -17,3 +17,6 @@ var a=0;
 if(!a){
     console.log('hi');
 }
+
+var data = [];
+console.log(data.length);

@@ -49,7 +49,7 @@
         }
         .home{
             position:absolute;
-            left:85%;
+            left:90%;
             color:rgba(255, 255, 255, 0.904);
             margin:12.5px;
             font-weight: 400;
@@ -144,7 +144,9 @@
         .thing > :first-child {
         margin-top: 0;
         }
-
+        .thing > :nth-child(2){
+            font-size: 1.1em;
+        }
         .thing > :last-child {
         margin-bottom: 0;
         }
@@ -262,37 +264,44 @@
                     <h2>a little title</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate ab tenetur at delectus aspernatur similique modi, est, debitis sit voluptate dolorem eligendi odio laborum magni nesciunt? Aliquam omnis molestiae at.</p>
                 </div>
-                <% let length = data.length-1 %>
-                <% for(let i=0; i<=length; i++){ %>
-                    <div class="thing">
-                        <h2><%=data[i].title%></h2>
-                        <p><%=data[i].description%></p>
-                        <div class='crudbox'>
-                            <div class="crudboxnick">
-                                <%if(seetime[i]["date_format(lasttime,'%y-%m-%d:%l%p')"]){%>
-                                    수정됨 <%=   seetime[i]["date_format(lasttime,'%y-%m-%d:%l%p')"] %>
-                                    <%}else{ %>
-                                    <%=   seetime[i]["date_format(firsttime,'%y-%m-%d:%l%p')"] %>
-                                    <%}%>
-                                    <% if(data[i].nick){ %>
-                                        <%= data[i].nick %>
-                                    <%} %>
-                            </div>
-                            <div class="crudboxup">
-                                <form action="/update" method="POST" >
-                                    <input type="hidden" name="id" value='<%- data[i].id%>'>
-                                    <input type="hidden" name="uptitle" value='<%-data[i].title%>'>
-                                    <input type="hidden" name="updesc" value='<%-data[i].description%>'>
-                                    <button class="crud">수정</button>
-                                </form>
-                                <form action="/delete" method="POST" id='<%-data[i].title%>'>
-                                    <input type="hidden" name="dtitle" value='<%-data[i].title%>'>
-                                    <button class="del" type="button" onclick='del(<%- i %>)'>삭제</button>
-                                </form>
+                <% if(data.length){ %>
+                    <% let length = data.length-1 %>
+                    <% for(let i=0; i<=length; i++){ %>
+                        <div class="thing">
+                            <h2><%=data[i].title%></h2>
+                            <p><%=data[i].description%></p>
+                            <div class='crudbox'>
+                                <div class="crudboxnick">
+                                    <%if(seetime[i]["date_format(lasttime,'%y-%m-%d__%l%p')"]){%>
+                                        수정됨 <%=   seetime[i]["date_format(lasttime,'%y-%m-%d__%l%p')"] %>
+                                        <%}else{ %>
+                                        <%=   seetime[i]["date_format(firsttime,'%y-%m-%d__%l%p')"] %>
+                                        <%}%>
+                                        <% if(data[i].nick){ %>
+                                            <%= data[i].nick %>
+                                        <%} %>
+                                </div>
+                                <div class="crudboxup">
+                                    <form action="/update" method="POST" >
+                                        <input type="hidden" name="id" value='<%- data[i].id%>'>
+                                        <input type="hidden" name="uptitle" value='<%-data[i].title%>'>
+                                        <input type="hidden" name="updesc" value='<%-data[i].description%>'>
+                                        <button class="crud">수정</button>
+                                    </form>
+                                    <form action="/delete" method="POST" id='<%-data[i].title%>'>
+                                        <input type="hidden" name="dtitle" value='<%-data[i].title%>'>
+                                        <button class="del" type="button" onclick='del(<%- i %>)'>삭제</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
+                    <% } %>
+                <%}else{ %>
+                    <div class='thing'>
+                        <h2> plan을추가해주세요</h2>
+                        <p>--------------------------------------</p>
                     </div>
-                <% } %>
+                <%} %>
             </schedule>
             <aside class="blank">
                 <h2 class="left"></h2>
