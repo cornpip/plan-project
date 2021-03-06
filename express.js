@@ -136,6 +136,7 @@ app.post('/login_process', passport.authenticate('local',{
 //로그인 라우트
 
 app.get('/logout', function(req,res){
+    delete req.session.team;
     req.logout();
     res.redirect('/');
 });
@@ -268,27 +269,40 @@ app.get('/moveteam', function(req,res){
     res.end()
 })
 
+app.post('/teamform1', function(req,res){
+    var teampass =req.body.teampass;
+    db.query(`SELECT * FROM team WHERE teampass=?`,[teampass],function(err, result){
+        req.session.team = {teamid : result[0].teamid }
+        res.redirect('/teamform')
+    })
+})
 
 //계속 뭔갈 보낼수없으니까
 //기본적으로 뭘 보려는 페이지는 get이여야지
-app.post('/teamform', function(req,res){
-    var teampass= req.body.teampass;
+//res.redirect 그냥하면 get으로 요청해
+//307붙이고하면 get으로 안변하고 요청한데
+app.get('/teamform', function(req,res){
+    var teamid= req.session.team.teamid;
     console.log(req.session);
-    db.query(`SELECT * FROM team WHERE teampass=?`,[teampass],function(err, result){
-        db.query(`SELECT * FROM teamplan WHERE teamid=?`,[result[0].teamid],function(err, result2){
-            db.query(`SELECT date_format(firsttime,'%y-%m-%d__%l%p'),
-            date_format(lasttime,'%y-%m-%d__%l%p') FROM teamplan WHERE teamid=?`
-            ,[result[0].teamid],function(err,result3){
-                res.render('form(dok)',
-                {data: result2, seetime:result3, 
-                 action:'/teamform_process', data3:result[0].teamid});
-            })
+    console.log(teamid)
+    if(!req.user){
+        res.send('로그인 필요');
+        return false;
+    }
+    db.query(`SELECT * FROM teamplan WHERE teamid=?`,[teamid],function(err, result){
+        db.query(`SELECT date_format(firsttime,'%y-%m-%d__%l%p'),
+        date_format(lasttime,'%y-%m-%d__%l%p') FROM teamplan WHERE teamid=?`
+        ,[teamid],function(err,result2){
+            res.render('form(dok)',
+            {data: result, seetime:result2, 
+                action:'/teamform_process'});
         })
     })
 })
 
 app.post('/teamform_process',function(req,res){
     let body= req.body;
+    let teamid= req.session.team.teamid;
     if(body.title == ''){
         res.redirect('/teamform');
     }
@@ -297,8 +311,8 @@ app.post('/teamform_process',function(req,res){
     }
     else{
         db.query(`INSERT INTO teamplan(teamid, title, description, nick) 
-        VALUES('${body.teamid}','${body.title}','${body.detail}','${req.user.nick}')`);
-        res.redirect(307, '/teamform');
+        VALUES('${teamid}','${body.title}','${body.detail}','${req.user.nick}')`);
+        res.redirect('/teamform');
     }
 })
 

@@ -240,9 +240,6 @@
     <div class="flex">
         <div class="container">
             <form action='<%-action%>' method="POST">
-                <% if(action == '/teamform_process'){ %>
-                    <input type='hidden' name='teamid' value='<%- data3 %>'>
-                <%} %>
                 <header>
                     <p>Title >>> 
                         <input type="text" name="title" placeholder="Title을 입력없을시 전송되지않습니다.">
