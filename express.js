@@ -156,7 +156,7 @@ app.get("/form", function(req, res){
         date_format(lasttime,'%y-%m-%d__%l%p') FROM plan WHERE nick=?`,[req.user.nick], function(err, result2){
             console.log(result.length);
             res.render('form(dok)',
-            {data: result, seetime:result2});
+            {data: result, seetime:result2, action:'/form_process'});
         })
     })
 })
@@ -258,10 +258,48 @@ app.get('/maketeam', function(req,res){
 
 app.post('/reqteam', function(req,res){
     var body=req.body
-     db.query(`INSERT INTO teamplan(teamname, teampass) 
+     db.query(`INSERT INTO team(teamname, teampass) 
      VALUES('${body.teamname}','${body.teampass}')`);
     console.log(body);
     res.end();
+})
+
+app.get('/moveteam', function(req,res){
+    res.end()
+})
+
+
+//계속 뭔갈 보낼수없으니까
+//기본적으로 뭘 보려는 페이지는 get이여야지
+app.post('/teamform', function(req,res){
+    var teampass= req.body.teampass;
+    console.log(req.session);
+    db.query(`SELECT * FROM team WHERE teampass=?`,[teampass],function(err, result){
+        db.query(`SELECT * FROM teamplan WHERE teamid=?`,[result[0].teamid],function(err, result2){
+            db.query(`SELECT date_format(firsttime,'%y-%m-%d__%l%p'),
+            date_format(lasttime,'%y-%m-%d__%l%p') FROM teamplan WHERE teamid=?`
+            ,[result[0].teamid],function(err,result3){
+                res.render('form(dok)',
+                {data: result2, seetime:result3, 
+                 action:'/teamform_process', data3:result[0].teamid});
+            })
+        })
+    })
+})
+
+app.post('/teamform_process',function(req,res){
+    let body= req.body;
+    if(body.title == ''){
+        res.redirect('/teamform');
+    }
+    else if(body.detail == ''){
+        res.redirect('/teamform');
+    }
+    else{
+        db.query(`INSERT INTO teamplan(teamid, title, description, nick) 
+        VALUES('${body.teamid}','${body.title}','${body.detail}','${req.user.nick}')`);
+        res.redirect(307, '/teamform');
+    }
 })
 
 var server = app.listen(3000, function () {

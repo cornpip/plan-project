@@ -136,6 +136,23 @@
         form{
             display:contents;
         }
+        #homebox{
+            display:contents;
+        }
+        #homebox a:link{
+            color: #a600d8dc;
+        }
+        #homebox a:visited {
+            color: #a600d8dc; 
+        }
+        #homebox > .teamajax{
+            border:none;
+            cursor: pointer;
+            text-decoration: underline;
+
+            font-size: 1.0em;
+            color: #a600d8dc;
+        }
     </style>
     <script defer src="./clock2.js"></script>
     <!-- src 경로는 public 기준으로 시작 -->
@@ -203,10 +220,14 @@
                         </div>
                     </form>
                 <%}else{ %>
-                    <h2>로그인 되었습니다.</h2>
-                    <a href=/form>move to plan</a>
-                    <br>
-                    <a href=/maketeam>make team</a>
+                    <div id="homebox">
+                        <h2>로그인 되었습니다.</h2>
+                        <a href=/form>move to plan</a>
+                        <br>
+                        <a href=/maketeam>make team</a>
+                        <br>
+                        <button class="teamajax" onclick="toteam()">move to teamplan</button>
+                    </div>               
                 <%} %>
             </default>
             <aside class="blank">
@@ -217,5 +238,37 @@
             </aside>
         </div>
     </div>
+    <script>
+        function toteam(){
+            const attach = document.getElementById('homebox');
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/moveteam', true);
+            xhr.send();
+
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState==4 && xhr.status==200){
+                    attach.innerHTML = `
+                    <h3>팀plan 비밀번호를 입력하세요.</h3>
+                        <form action="/teamform" method='POST'>
+                            <input type="text" name="teampass">
+                            <br>
+                            <div class="wrapper">
+                                <button type="submit" class="first">
+                                    <span>입장</span>
+                                    <div class="success">
+                                        <svg xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"  viewBox="0 0 29.756 29.756" style="enable-background:new 0 0 29.756 29.756;" xml:space="preserve">
+                                            
+                                        <path d="M29.049,5.009L28.19,4.151c-0.943-0.945-2.488-0.945-3.434,0L10.172,18.737l-5.175-5.173   c-0.943-0.944-2.489-0.944-3.432,0.001l-0.858,0.857c-0.943,0.944-0.943,2.489,0,3.433l7.744,7.752   c0.944,0.943,2.489,0.943,3.433,0L29.049,8.442C29.991,7.498,29.991,5.953,29.049,5.009z"/>
+                                        </svg>
+                                    </div>
+                                </button>
+                            </div>
+                        </form>
+                        `;
+                }
+            }
+        }
+    </script>
 </body>
 </html>
